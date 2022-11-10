@@ -1,0 +1,18 @@
+
+# Files
+node_modules/
+dist/
+.DS_Store
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Environment
+.env
+
+# Logs
+yarn-error.log*
+yarn-debug.log*
+npm-error.log*
+npm-debug.log*
+

@@ -1,0 +1,15 @@
+{
+  "name": "mc-webhook",
+  "description": "Sync your discord chat to minecraft server logs!",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url":"https://github.com/jate-koh/mc-webhook.git"
+},
+  "bugs": {
+    "url": "https://github.com/jate-koh/mc-webhook/issues"
+  },
+  "author": "jate-koh <jate_ben@hotmail.com>",
+  "license": "MIT"
+}
