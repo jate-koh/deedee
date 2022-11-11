@@ -2,6 +2,7 @@
 # Files
 node_modules/
 dist/
+prod/
 .DS_Store
 .vscode/
 !.vscode/extensions.json

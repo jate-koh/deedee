@@ -2,14 +2,31 @@
   "name": "mc-webhook",
   "description": "Sync your discord chat to minecraft server logs!",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "./prod/index.js",
   "repository": {
     "type": "git",
-    "url":"https://github.com/jate-koh/mc-webhook.git"
-},
+    "url": "https://github.com/jate-koh/mc-webhook.git"
+  },
   "bugs": {
     "url": "https://github.com/jate-koh/mc-webhook/issues"
   },
   "author": "jate-koh <jate_ben@hotmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "node -r dotenv/config ./dist/src/index.js"
+  },
+  "dependencies": {
+    "@discordjs/builders": "^1.3.0",
+    "@discordjs/rest": "^1.3.0",
+    "discord-api-types": "^0.37.17",
+    "discord.js": "^14.6.0",
+    "dotenv": "^16.0.3",
+    "mongoose": "^6.7.2",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "typescript": "^4.8.4"
+  }
 }
