@@ -6,3 +6,8 @@ coverage
 .vscode/
 dist/
 node_modules/
+
+# Config
+package.json
+tsconfig.json
+webpack.config.js
