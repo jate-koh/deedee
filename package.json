@@ -1,14 +1,14 @@
 {
-  "name": "mc-webhook",
+  "name": "deedee-bot",
   "description": "Sync your discord chat to minecraft server logs!",
   "version": "0.0.1",
   "main": "./prod/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jate-koh/mc-webhook.git"
+    "url": "https://github.com/jate-koh/deedee.git"
   },
   "bugs": {
-    "url": "https://github.com/jate-koh/mc-webhook/issues"
+    "url": "https://github.com/jate-koh/deedee/issues"
   },
   "author": "jate-koh <jate_ben@hotmail.com>",
   "license": "MIT",
