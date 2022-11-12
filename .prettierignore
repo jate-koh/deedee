@@ -1,0 +1,8 @@
+# Ignore Artifacts
+builds
+coverage
+
+# Ignore Files
+.vscode/
+dist/
+node_modules/
