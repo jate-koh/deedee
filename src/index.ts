@@ -1,26 +1,8 @@
-import { Client } from 'discord.js';
-import { IntentOptions } from '@/config/IntentOption';
-import { authValidator } from './utils/authValidator';
-import { databaseConnector } from './utils/databaseConnector';
+import dotenv from 'dotenv';
+import DeeDeeBot from './DeeDeeBot';
 
-const authValidation = new authValidator();
-const databaseConnection = new databaseConnector();
+dotenv.config();
+const BOT_TOKEN = process.env.BOT_TOKEN; 
+const MONGO_URL = process.env.MONGO_URL || undefined;
 
-(async () => {
-  if( !(authValidation.validateToken || authValidation.validateMongo) ) {
-    console.error(`Index: Both Token and MongoDB URL is not set!`);
-    return;
-  }
-
-  if( !databaseConnection.connectDatabase ) {
-    console.error(`Index: Failed to connect to MongoDB!`)
-  }
-  
-  try {
-    const bot = new Client({ intents: IntentOptions });
-    await bot.login(process.env.BOT_TOKEN);
-  } catch (error) {
-    throw new Error(`Index: Bot failed to login!`);
-  }
-
-})();
+new DeeDeeBot(BOT_TOKEN, false, MONGO_URL);
