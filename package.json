@@ -2,7 +2,7 @@
   "name": "deedee-bot",
   "description": "Sync your discord chat to minecraft server logs!",
   "version": "0.0.1",
-  "main": "./prod/index.js",
+  "main": "./dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/jate-koh/deedee.git"
