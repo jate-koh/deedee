@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-export class authValidator {
+export default class AuthValidator {
 
     private token: string = process.env.BOT_TOKEN || undefined;
     private mongoUrl: string = process.env.MONGO_URL || undefined;
@@ -12,7 +12,7 @@ export class authValidator {
     
     public validateToken(): boolean {
         if(!this.token) {
-            console.warn(`${this.constructor.name}: Missing discord bot token!`);
+            console.error(`${this.constructor.name}: Missing discord bot token!`);
             return false;
         }
         else {
@@ -22,7 +22,7 @@ export class authValidator {
 
     public validateMongo(): boolean {
         if(!this.mongoUrl) {
-            console.warn(`${this.constructor.name}: Missing MongoDB URL!`);
+            console.error(`${this.constructor.name}: Missing MongoDB URL!`);
             return false;
         }
         else {
