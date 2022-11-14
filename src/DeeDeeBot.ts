@@ -1,7 +1,7 @@
 import { Client } from 'discord.js';
 import { IntentOptions } from './config/IntentOption';
-import  AuthValidator from './utils/AuthValidator';
-import  DatabaseConnector  from './utils/DatabaseConnector';
+import AuthValidator from './utils/AuthValidator';
+import DatabaseConnector from './utils/DatabaseConnector';
 
 export default class DeeDeeBot {
   private mongoUrl: string = undefined;
@@ -11,28 +11,36 @@ export default class DeeDeeBot {
   private authValidation = new AuthValidator();
   private databaseConnection = new DatabaseConnector();
 
-  public constructor(botToken: string, requireDatabase?: boolean, mongoUrl?: string) {
-    if(requireDatabase != undefined) {
+  public constructor(
+    botToken: string,
+    requireDatabase?: boolean,
+    mongoUrl?: string
+  ) {
+    if (requireDatabase != undefined) {
       this.requireDatabase = requireDatabase;
     }
 
     try {
       this.run();
     } catch (error) {
-      throw new Error(`${this.constructor.name}: Failed to run the bot.`)
+      throw new Error(`${this.constructor.name}: Failed to run the bot.`);
     }
   }
 
   public async run() {
-    if( !(this.authValidation.validateToken) ) {
-      throw new Error(`${this.constructor.name}: Failed to validate bot token.`);
+    if (!this.authValidation.validateToken) {
+      throw new Error(
+        `${this.constructor.name}: Failed to validate bot token.`
+      );
     }
     console.log(`${this.constructor.name}: Bot token validated`);
 
-    if( this.requireDatabase ) {
+    if (this.requireDatabase) {
       /** Validate MongoDB if this bot required database */
-      if( !(this.authValidation.validateMongo) ) {
-        throw new Error(`${this.constructor.name}: Failed to validate MongoDB url.`)
+      if (!this.authValidation.validateMongo) {
+        throw new Error(
+          `${this.constructor.name}: Failed to validate MongoDB url.`
+        );
       }
       console.log(`${this.constructor.name}: MongoDB url validated.`);
 
@@ -40,11 +48,13 @@ export default class DeeDeeBot {
       try {
         await this.databaseConnection.connectDatabase();
       } catch (error) {
-        throw new Error(`${this.constructor.name}: Failed to establish a connection to MongoDB.`);
+        throw new Error(
+          `${this.constructor.name}: Failed to establish a connection to MongoDB.`
+        );
       }
       console.log(`${this.constructor.name}: MongoDB connected.`);
     }
-    
+
     /** Bot Login */
     try {
       const bot = new Client({ intents: IntentOptions });
@@ -52,6 +62,6 @@ export default class DeeDeeBot {
     } catch (error) {
       throw new Error(`${this.constructor.name}: Bot failed to log in.`);
     }
-    console.log(`${this.constructor.name}: Bot logged in. Bot is running.`)
+    console.log(`${this.constructor.name}: Bot logged in. Bot is running.`);
   }
 }
