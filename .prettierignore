@@ -1,0 +1,13 @@
+# Ignore Artifacts
+builds
+coverage
+
+# Ignore Files
+.vscode/
+dist/
+node_modules/
+
+# Config
+package.json
+tsconfig.json
+webpack.config.js
