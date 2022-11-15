@@ -4,17 +4,13 @@ import { Command } from './commands/Command';
 import { commandList } from './commands/CommandList';
 
 export default class InteractionManager {
-  private interactionEvent: Interaction;
+  private interactionEvent: Interaction = undefined;
   private interactionState: InteractionState = undefined;
 
-  public constructor(interaction: Interaction) {
-    this.interactionEvent = interaction;
-    this.checkTypeInteraction(interaction);
-  }
-
-  public async checkTypeInteraction(interaction: Interaction) {
+  public async onInteraction(interaction: Interaction) {
     if (interaction.isCommand()) {
       console.log(`${this.constructor.name}: Command Interaction Detected.`);
+      this.setInteraction(interaction);
       this.setInteractionState(InteractionState.COMMAND);
 
       for (const Command of commandList) {
@@ -29,11 +25,17 @@ export default class InteractionManager {
           break;
         }
       }
+    } else {
+      console.log(`${this.constructor.name}: Unknown Interaction Detected.`);
     }
   }
 
   public getInteraction(): Interaction {
     return this.interactionEvent;
+  }
+
+  public setInteraction(interaction: Interaction): void {
+    this.interactionEvent = interaction;
   }
 
   public getInteractionState(): InteractionState {
