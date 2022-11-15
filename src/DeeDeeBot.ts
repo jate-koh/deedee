@@ -1,5 +1,6 @@
 import { Client } from 'discord.js';
 import { IntentOptions } from './config/IntentOption';
+import InteractionManager from './events/InteractionManager';
 import AuthValidator from './utils/AuthValidator';
 import DatabaseConnector from './utils/DatabaseConnector';
 
@@ -10,12 +11,16 @@ export default class DeeDeeBot {
 
   private authValidation = new AuthValidator();
   private databaseConnection = new DatabaseConnector();
+  private interactionManager = new InteractionManager();
 
   public constructor(
     botToken: string,
     requireDatabase?: boolean,
     mongoUrl?: string
   ) {
+    
+    this.botToken = botToken;
+    this.mongoUrl = mongoUrl;
     if (requireDatabase != undefined) {
       this.requireDatabase = requireDatabase;
     }
@@ -55,13 +60,28 @@ export default class DeeDeeBot {
       console.log(`${this.constructor.name}: MongoDB connected.`);
     }
 
+    const bot = new Client({ intents: IntentOptions });
+
     /** Bot Login */
     try {
-      const bot = new Client({ intents: IntentOptions });
-      await bot.login(process.env.BOT_TOKEN);
+      await bot.login(this.botToken);
+      console.log(`${this.constructor.name}: Bot logged in.`);
     } catch (error) {
       throw new Error(`${this.constructor.name}: Bot failed to log in.`);
     }
-    console.log(`${this.constructor.name}: Bot logged in. Bot is running.`);
+
+    bot.on('ready', () => {
+      console.log(`${this.constructor.name}: Bot is ready.`);
+    });
+
+    bot.on('interactionCreate', async (interaction) => {
+      try {
+        await this.interactionManager.onInteraction(interaction);
+      } catch (error) {
+        console.error(
+          `${this.constructor.name}: Error occured on Interaction Manager`
+        );
+      }
+    });
   }
 }
