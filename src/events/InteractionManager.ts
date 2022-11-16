@@ -12,17 +12,24 @@ export default class InteractionManager {
       console.log(`${this.constructor.name}: Command Interaction Detected.`);
       this.setInteraction(interaction);
       this.setInteractionState(InteractionState.COMMAND);
-
+      //console.log(`${this.constructor.name}: User invoked: '${interaction.commandName}'`);
+      
       for (const Command of commandList) {
-        if (interaction.command.name == Command.data.name) {
+        //console.log(Command);
+        if (interaction.commandName == Command.data.name) {
           try {
             await Command.run(interaction);
           } catch (error) {
             console.error(
-              `${this.constructor.name}: Failed to execute command: '${interaction.command.name}'`
+              `${this.constructor.name}: Failed to execute command: '${interaction.commandName}'`
             );
           }
           break;
+        }
+        else {
+          console.log(
+            `${this.constructor.name}: Can't find any ${interaction.commandName} in the listings.`
+          );
         }
       }
     } else {
