@@ -12,19 +12,22 @@ export default class test implements Command {
     .setName('test')
     .setDescription('Test to see if bot is working or not');
 
-  public async run(interaction: CommandInteraction): Promise<void> {
-    console.log(`${this.constructor.name}: DeeDeeBot run a test command....`);
+  public run = async (interaction: CommandInteraction) => {
+    console.log(`${this.constructor.name}: Running a test command....`);
 
-    const { user } = interaction;
+    // interaction.deferReply();
+    // const { user } = interaction;
 
-    const TestEmbed = new EmbedBuilder();
-    TestEmbed.setTitle('Test Command Invoked :+1:');
-    TestEmbed.setDescription('This bot workin perfectly... :white_check_mark:');
-    TestEmbed.setAuthor({
-      name: user.tag,
-      iconURL: user.displayAvatarURL(),
-    });
+    // const TestEmbed = new EmbedBuilder();
+    // TestEmbed.setTitle('Test Command Invoked :+1:');
+    // TestEmbed.setDescription('This bot working perfectly... :white_check_mark:');
+    // TestEmbed.setAuthor({
+    //   name: user.tag,
+    //   iconURL: user.displayAvatarURL(),
+    // });
 
-    await interaction.channel.send({ embeds: [TestEmbed] });
+    //await interaction.editReply({ embeds: [TestEmbed] });
+
+    await interaction.reply({content: 'เล่น Phasmo กันเปล่า?'});
   }
 }
