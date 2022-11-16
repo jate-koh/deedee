@@ -1,5 +1,6 @@
 const path = require('path');
 
+const nodeExternals = require('webpack-node-externals');
 const terserPlugin = require('terser-webpack-plugin');
 const tsconfigPath = require("tsconfig-paths-webpack-plugin");
 
@@ -7,24 +8,31 @@ const dist_path = path.resolve(__dirname, 'dist');
 const src_path = path.resolve(__dirname, 'src');
 
 const main = {
-    entry: path.resolve(src_path, 'index.ts'),
+    entry: './src/index.ts',
+    resolve: {
+        extensions: ['.ts'], 
+        plugins: [new tsconfigPath()]
+    },
+    output: {
+        filename: 'bundle.js',
+        path: dist_path
+    },
+
     module: {
-        rule: {
-            test: /\.ts$/,
+        rules: [{
+            test: /\.ts?$/,
             loader: 'ts-loader',
-            include: srcPath,
+            include: src_path,
             options: { 
                 transpileOnly: true 
             },
-        },
+        }]  
     },
 
     plugins: [],
 
-    resolve: {
-        extensions: [".ts"], 
-        plugins: [new tsconfigPath()]
-    },
+    externals: [nodeExternals()],
+    externalsPresets: { node: true },
 
     optimization: {
         minimize: true,
@@ -33,11 +41,6 @@ const main = {
         ]
     },
 
-    output: {
-        path: dist_path,
-        clean: true
-    }
-
 };
 
-module.export = [main];
+module.exports = [main]
