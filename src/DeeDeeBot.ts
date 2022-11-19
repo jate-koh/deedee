@@ -11,7 +11,7 @@ export default class DeeDeeBot {
   private authManager = new AuthManager();
   private databaseConnection = new DatabaseConnector();
   private interactionManager = new InteractionManager();
-  private initalization = new Initializer();
+  private initalization = new Initializer(this.authManager);
 
   public constructor(
     botToken: string,
@@ -19,7 +19,6 @@ export default class DeeDeeBot {
     requireDatabase?: boolean,
     mongoUrl?: string
   ) {
-
     this.authManager.setBotToken(botToken);
     this.authManager.setGuildId(guildId);
 
@@ -34,17 +33,16 @@ export default class DeeDeeBot {
     } catch (error) {
       throw new Error(`${this.constructor.name}: Failed to run the bot.`);
     }
-    console.log(`${this.constructor.name}: Bot launch completed.`)
+    console.log(`${this.constructor.name}: Bot launch completed.`);
   }
 
   public async auth() {
-    if(!this.authManager.doAuth(this.requireDatabase)) {
+    if (!this.authManager.doAuth(this.requireDatabase)) {
       throw new Error(`${this.constructor.name}: Authentication failed`);
     }
   }
 
   public async run() {
-
     if (this.requireDatabase) {
       /** Connect to Database */
       try {
@@ -69,18 +67,13 @@ export default class DeeDeeBot {
 
     bot.on('ready', async () => {
       try {
-        await this.initalization.onReady(
-          bot, 
-          this.authManager.getBotToken(), 
-          this.authManager.getGuildId());
+        await this.initalization.onReady(bot);
       } catch (error) {
         throw new Error(
           `${this.constructor.name}: Failed to initialize settings`
         );
       }
-      console.log(
-        `${this.constructor.name}: Bot initialized. Bot is ready.`
-      );
+      console.log(`${this.constructor.name}: Bot initialized. Bot is ready.`);
     });
 
     bot.on('interactionCreate', async (interaction) => {
