@@ -1,6 +1,6 @@
 import { Command } from './Command';
-import test from './listing/test';
+import phasmo from './listing/phasmo';
 
-    const Test = new test();
+    const Phasmo = new phasmo();
 
-export const commandList: Command[] = [Test];
+export const commandList: Command[] = [Phasmo];
