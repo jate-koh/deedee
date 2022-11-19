@@ -2,16 +2,13 @@ import { Client } from 'discord.js';
 import { IntentOptions } from './config/IntentOption';
 import Initializer from './events/Initializer';
 import InteractionManager from './events/InteractionManager';
-import AuthValidator from './utils/AuthValidator';
+import AuthManager from './utils/AuthManager';
 import DatabaseConnector from './utils/DatabaseConnector';
 
 export default class DeeDeeBot {
-  private mongoUrl: string = undefined;
-  private botToken: string = undefined;
-  private guildId: string = undefined;
   private requireDatabase: boolean = false;
 
-  private authValidation = new AuthValidator();
+  private authManager = new AuthManager();
   private databaseConnection = new DatabaseConnector();
   private interactionManager = new InteractionManager();
   private initalization = new Initializer();
@@ -22,44 +19,33 @@ export default class DeeDeeBot {
     requireDatabase?: boolean,
     mongoUrl?: string
   ) {
-    this.botToken = botToken;
-    this.mongoUrl = mongoUrl;
-    this.guildId = guildId;
+
+    this.authManager.setBotToken(botToken);
+    this.authManager.setGuildId(guildId);
+
     if (requireDatabase != undefined) {
       this.requireDatabase = requireDatabase;
+      this.authManager.setMongoUrl(mongoUrl);
     }
 
     try {
+      this.auth();
       this.run();
     } catch (error) {
       throw new Error(`${this.constructor.name}: Failed to run the bot.`);
     }
+    console.log(`${this.constructor.name}: Bot launch completed.`)
+  }
+
+  public async auth() {
+    if(!this.authManager.doAuth(this.requireDatabase)) {
+      throw new Error(`${this.constructor.name}: Authentication failed`);
+    }
   }
 
   public async run() {
-    if (!this.authValidation.validateToken) {
-      throw new Error(
-        `${this.constructor.name}: Failed to validate bot token.`
-      );
-    }
-    console.log(`${this.constructor.name}: Bot token validated.`);
-
-    if (!this.authValidation.validateGuildId) {
-      throw new Error(
-        `${this.constructor.name}: Failed to validate server ID.`
-      );
-    }
-    console.log(`${this.constructor.name}: Server ID validated.`);
 
     if (this.requireDatabase) {
-      /** Validate MongoDB if this bot required database */
-      if (!this.authValidation.validateMongo) {
-        throw new Error(
-          `${this.constructor.name}: Failed to validate MongoDB url.`
-        );
-      }
-      console.log(`${this.constructor.name}: MongoDB url validated.`);
-
       /** Connect to Database */
       try {
         await this.databaseConnection.connectDatabase();
@@ -75,7 +61,7 @@ export default class DeeDeeBot {
 
     /** Bot Login */
     try {
-      await bot.login(this.botToken);
+      await bot.login(this.authManager.getBotToken());
       console.log(`${this.constructor.name}: Bot logged in.`);
     } catch (error) {
       throw new Error(`${this.constructor.name}: Bot failed to log in.`);
@@ -83,7 +69,10 @@ export default class DeeDeeBot {
 
     bot.on('ready', async () => {
       try {
-        await this.initalization.onReady(bot, this.botToken, this.guildId);
+        await this.initalization.onReady(
+          bot, 
+          this.authManager.getBotToken(), 
+          this.authManager.getGuildId());
       } catch (error) {
         throw new Error(
           `${this.constructor.name}: Failed to initialize settings`
