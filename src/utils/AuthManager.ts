@@ -4,7 +4,7 @@ export default class AuthManager {
   private botToken: string = undefined;
   private mongoUrl: string = undefined;
   private guildId: string = undefined;
-  
+
   private adminList: Map<string, string> = undefined;
 
   /**
@@ -15,17 +15,17 @@ export default class AuthManager {
    * true: if verification process is successful.
    */
   public doAuth(requireDatabase?: boolean | false): boolean {
-    if(!this.validateToken) { 
+    if (!this.validateToken) {
       return false;
     }
-    if(requireDatabase) {
-      if(!this.validateMongo) { 
+    if (requireDatabase) {
+      if (!this.validateMongo) {
         return false;
       }
     }
-    if(!this.validateGuildId) {
+    if (!this.validateGuildId) {
       return false;
-    } 
+    }
     return true;
   }
 
@@ -59,11 +59,11 @@ export default class AuthManager {
   public setBotToken(botToken: string): void {
     this.botToken = botToken;
   }
-  
+
   public setMongoUrl(mongoUrl: string): void {
     this.mongoUrl = mongoUrl;
   }
-  
+
   public setGuildId(guildId: string): void {
     this.guildId = guildId;
   }

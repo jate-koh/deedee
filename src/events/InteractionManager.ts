@@ -13,7 +13,7 @@ export default class InteractionManager {
       this.setInteraction(interaction);
       this.setInteractionState(InteractionState.COMMAND);
       //console.log(`${this.constructor.name}: User invoked: '${interaction.commandName}'`);
-      
+
       for (const Command of commandList) {
         //console.log(Command);
         if (interaction.commandName == Command.data.name) {
@@ -25,8 +25,7 @@ export default class InteractionManager {
             );
           }
           break;
-        }
-        else {
+        } else {
           console.log(
             `${this.constructor.name}: Can't find any ${interaction.commandName} in the listings.`
           );
