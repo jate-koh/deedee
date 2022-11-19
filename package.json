@@ -16,7 +16,7 @@
   "scripts": {
     "build:tsc": "tsc",
     "build:dev": "webpack --mode development",
-    "dev": "webpack --mode development && node -r dotenv/config ./dist/src/index.js",
+    "dev": "tsc && webpack --mode development && node -r dotenv/config ./dist/src/index.js",
     "start": "node -r dotenv/config ./dist/src/index.js",
     "lint": "prettier --write ."
   },
